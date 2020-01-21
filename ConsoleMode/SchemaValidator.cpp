@@ -1,5 +1,8 @@
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-copy"
 #include "SchemaValidator.h"
 #include <QtGlobal>
+#pragma GCC diagnostic pop
 
 #include "../Logger/Log.h"
 #include "../Err/FlashToolErrorCodeDef.h"

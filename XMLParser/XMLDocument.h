@@ -40,9 +40,12 @@ namespace XML
     private:
         void DoBeautify(Node &node, unsigned int depth);
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
     private:
         std::auto_ptr<DocumentImpl> m_Impl;
     };
+#pragma GCC diagnostic pop
 }
 
 #endif // _XML_DOCUMENT_H

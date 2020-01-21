@@ -42,7 +42,7 @@ bool EncryDialog::checkPassword()
     time(&now);
     timenow = localtime(&now);
 
-    if(strPassword_ == "OnlyMTK!")
+    if (strPassword_ == "OnlyMTK!")
         return true;
 
     password_day = 5827;
@@ -70,9 +70,9 @@ bool EncryDialog::checkPassword()
     password_day += wDay;
     password_month += wMonth;
 
-    strPassword1_day.sprintf("%d", password_day);
-    strPassword1_week.sprintf("%d", password_week);
-    strPassword1_month.sprintf("%d", password_month);
+    strPassword1_day.sprintf("%lu", password_day);
+    strPassword1_week.sprintf("%lu", password_week);
+    strPassword1_month.sprintf("%lu", password_month);
 
     password_day = wDay * 58942;
     if ((wDay > 0) && (wDay <= 10))
@@ -303,9 +303,21 @@ bool EncryDialog::checkPassword()
             password_c4_month +=25;
     }
 
-    strPassword2_day.sprintf("%c%c%c%c", password_c1_day, password_c2_day, password_c3_day, password_c4_day);
-    strPassword2_week.sprintf("%c%c%c%c", password_c1_week, password_c2_week, password_c3_week, password_c4_week);
-    strPassword2_month.sprintf("%c%c%c%c", password_c1_month, password_c2_month, password_c3_month, password_c4_month);
+    strPassword2_day.sprintf("%c%c%c%c",
+        (char)password_c1_day,
+        (char)password_c2_day,
+        (char)password_c3_day,
+        (char)password_c4_day);
+    strPassword2_week.sprintf("%c%c%c%c",
+        (char)password_c1_week,
+        (char)password_c2_week,
+        (char)password_c3_week,
+        (char)password_c4_week);
+    strPassword2_month.sprintf("%c%c%c%c",
+        (char)password_c1_month,
+        (char)password_c2_month,
+        (char)password_c3_month,
+        (char)password_c4_month);
 
     password_day = 2948201;
     password_week = 8138947;
@@ -323,9 +335,9 @@ bool EncryDialog::checkPassword()
     password_week = password_week >> 3;
     password_month = password_month >> 6;
 
-    strPassword3_day.sprintf("%d", password_day);
-    strPassword3_week.sprintf("%d", password_week);
-    strPassword3_month.sprintf("%d", password_month);
+    strPassword3_day.sprintf("%lu", password_day);
+    strPassword3_week.sprintf("%lu", password_week);
+    strPassword3_month.sprintf("%lu", password_month);
 
     strPassword_day_ = strPassword1_day;
     strPassword_day_ += strPassword2_day;
@@ -356,14 +368,14 @@ void EncryDialog::on_pushButton_OK_clicked()
 {
     strPassword_ = ui->lineEdit_password->text();
 
-    if(strPassword_.isEmpty())
+    if (strPassword_.isEmpty())
     {
         //TODO
        // main_windows_->ShowHelpContents(this, , "");
         return;
     }
 
-    if(checkPassword())
+    if (checkPassword())
     {
         main_windows_->SetSCIDownloadVisible(true);
 
@@ -388,31 +400,27 @@ void EncryDialog::on_pushButton_Cancel_clicked()
     reject();
 }
 
-void EncryDialog::on_lineEdit_password_textChanged(const QString &arg1)
-{
-    if(arg1.isEmpty())
+void EncryDialog::on_lineEdit_password_textChanged(const QString &arg1) {
+    if (arg1.isEmpty()) {
         ui->pushButton_OK->setEnabled(false);
-    else
+    } else {
         ui->pushButton_OK->setEnabled(true);
+    }
 }
 
-void EncryDialog::on_lineEdit_password_returnPressed()
-{
+void EncryDialog::on_lineEdit_password_returnPressed() {
     on_pushButton_OK_clicked();
 }
 
-void EncryDialog::closeEvent(QCloseEvent *)
-{
+void EncryDialog::closeEvent(QCloseEvent *) {
     main_windows_->SetSCIDownloadVisible(false);
 }
 
-void EncryDialog::showEvent(QShowEvent *)
-{
+void EncryDialog::showEvent(QShowEvent *) {
     ui->lineEdit_password->setText(tr(""));
 }
 
-void EncryDialog::UpdateUI()
-{
+void EncryDialog::UpdateUI() {
     this->setWindowTitle(LoadQString(main_windows_->GetLanguageTag(), IDS_STRING_ENCRY));
     ui->label_hint->setText(LoadQString(main_windows_->GetLanguageTag(), IDS_STRING_PASSWORD));
     ui->pushButton_OK->setText(LoadQString(main_windows_->GetLanguageTag(), IDS_STRING_OK));

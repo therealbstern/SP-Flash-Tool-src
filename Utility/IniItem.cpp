@@ -1,8 +1,9 @@
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-copy"
 #include "IniItem.h"
-
 #include <QSettings>
-
 #include "FileUtils.h"
+#pragma GCC diagnostic pop
 
 IniItem::IniItem(const QString &file_path, const QString &section_name, const QString &item_name):
     file_path_(ABS_PATH_C(file_path.toLocal8Bit().constData())),

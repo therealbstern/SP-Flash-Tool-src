@@ -1,7 +1,9 @@
-
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-copy"
 #include "constString.h"
 #include <QTextCodec>
 #include <QObject>
+#pragma GCC diagnostic pop
 
 QString strEngVec[] = {
     QObject::tr("Failed to Start Updater.exe!"),
@@ -126,6 +128,7 @@ QString strEngVec[] = {
     QObject::tr("Device Test Ok")
 };
 
+#if 0
 const QString strCHString[]={
     "启动更新失败！",
     "崩溃！",
@@ -359,29 +362,34 @@ const QString strTWString[]={
     "設備測試(&T)",
     "設備測試完成"
 };
+#endif
 
 const QString test = QObject::tr("DownloadTest");
 const QString exitInfo = QObject::tr("The application is running, are you sure to exit?");
 
-QString LoadQString(Language_Tag languageID, int strID)
-{
+QString LoadQString(Language_Tag languageID, int strID) {
     QByteArray str;
 
-    switch(languageID)
-    {
-    case LANGUAGE_ENGLISH:
-        return strEngVec[strID];
+#if 0
+    switch (languageID) {
+        case LANGUAGE_ENGLISH:
+            return strEngVec[strID];
 
-    case LANGUAGE_ZH_CHINESE:
-        str = strCHString[strID].toLatin1();
-        return QTextCodec
+        case LANGUAGE_ZH_CHINESE:
+            str = strCHString[strID].toLatin1();
+            return QTextCodec
                 ::codecForName("GBK")->toUnicode(str.data());
 
-    case LANGUAGE_TW_CHINESE:
-        str = strTWString[strID].toLatin1();
-        return QTextCodec
+        case LANGUAGE_TW_CHINESE:
+            str = strTWString[strID].toLatin1();
+            return QTextCodec
                 ::codecForName("GBK")->toUnicode(str.data());
     }
 
     return "";
+#else
+    (void)languageID;
+    return strEngVec[strID];
+#endif
+
 }

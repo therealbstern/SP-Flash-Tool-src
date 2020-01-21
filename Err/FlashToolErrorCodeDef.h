@@ -1,6 +1,7 @@
 #ifndef _FLASH_TOOL_ERROR_CODE_DEF_H
 #define _FLASH_TOOL_ERROR_CODE_DEF_H
 typedef enum {
+    FT_UI_ERROR = -1,
     //<8000 is defined by brom.dll mtk_status.h
     FT_SUCCESS = 8000,
     FT_EXCEPTION = 8001,

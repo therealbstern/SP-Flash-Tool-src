@@ -6,7 +6,10 @@
 
 #include <iostream>
 #include <stdlib.h>
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-copy"
 #include <QString>
+#pragma GCC diagnostic pop
 #include <QStringList>
 #include <algorithm>
 #include <cctype>

@@ -130,6 +130,7 @@ int RomInfoFactory::GetScatterRomList(const QSharedPointer<APCore::Connection> &
     unsigned short rom_count(0);
     DL_HANDLE_T dl_handle = GET_DL_HANDLE_T(key_);
 
+    (void)conn;
     rom_info_list.clear();
 
     int ret = DL_GetCount(dl_handle, &rom_count);

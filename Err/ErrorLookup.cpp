@@ -21,7 +21,7 @@ string ErrorLookup::BromErrorMessage(STATUS_E error_code,
     if (S_SECURITY_ERROR_BEGIN <= error_code) {
         char buf[256];
         sprintf(buf,
-                " ERROR : %s (%d) , MSP ERROE CODE : 0x%02X. ",
+                " ERROR : %s (%ld) , MSP ERROE CODE : 0x%02X. ",
                 StatusToString(error_code), error_code, msp_code);
         prefix.append(buf);
     } else if (error_code == -1) {
@@ -31,13 +31,13 @@ string ErrorLookup::BromErrorMessage(STATUS_E error_code,
         if((unsigned int)error_code < (unsigned int)STATUS_ERR) //for old arch lib
         {
             sprintf(buf,
-                    " ERROR : %s (%d)",
+                    " ERROR : %s (%ld)",
                     StatusToString(error_code), error_code);
         }
         else //for new arch lib
         {
             sprintf(buf,
-                    " ERROR : %s (0x%X)",
+                    " ERROR : %s (0x%lX)",
                     StatusToString(error_code), error_code);
         }
         prefix.append(buf);

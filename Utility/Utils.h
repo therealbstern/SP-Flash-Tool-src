@@ -1,7 +1,10 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-copy"                                                                       
 #include <QString>
+#pragma GCC diagnostic pop
 #include <QDir>
 #include <QTextCodec>
 #include <QImage>

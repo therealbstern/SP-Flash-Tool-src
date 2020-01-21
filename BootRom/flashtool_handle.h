@@ -204,23 +204,19 @@ typedef struct {
     int     m_dramc_clk_output_dly; // for E1 DDR2 only
     int     m_reserved[10];
 
-    union
-    {
-        struct _DDR1
-        {
+    union {
+        struct {
             unsigned int m_mode;
             unsigned int m_ext_mode;    // dram driving strength -> customized
         } ddr1;
-        struct _DDR2
-        {
+        struct {
             unsigned int m_mode1;
             unsigned int m_mode2;
             unsigned int m_mode3;       // dram driving strength  -> customized
             unsigned int m_mode10;
             unsigned int m_mode63;
         } ddr2;
-        struct
-        {
+        struct {
             unsigned int m_mode0;
             unsigned int m_mode1;
             unsigned int m_mode2;
@@ -268,15 +264,12 @@ typedef struct {
     int     m_id_length;
     int     m_bloader_sub_version;
 
-    union
-    {
-        struct _DDR1
-        {
+    union {
+        struct {
             unsigned int m_mode;
             unsigned int m_ext_mode;    // dram driving strength -> customized
         } ddr1;
-        struct _DDR2
-        {
+        struct {
             unsigned int m_mode1;
             unsigned int m_mode2;
             unsigned int m_mode3;       // dram driving strength  -> customized
@@ -364,23 +357,19 @@ typedef struct {
     int     DRAM_RANK_SIZE[4];
     int     m_reserved[10];
 
-    union
-    {
-        struct _DDR1
-        {
+    union {
+        struct {
             unsigned int m_mode;
             unsigned int m_ext_mode;    // dram driving strength -> customized
         } ddr1;
-        struct _DDR2
-        {
+        struct {
             unsigned int m_mode1;
             unsigned int m_mode2;
             unsigned int m_mode3;       // dram driving strength  -> customized
             unsigned int m_mode10;
             unsigned int m_mode63;
         } ddr2;
-        struct
-        {
+        struct {
             unsigned int m_mode0;
             unsigned int m_mode1;
             unsigned int m_mode2;
@@ -488,15 +477,12 @@ typedef struct {
     int     m_mmd;
     int     m_reserved[8];
 
-    union
-    {
-        struct _DDR1
-        {
+    union {
+        struct {
             unsigned int m_mode;
             unsigned int m_ext_mode;    // dram driving strength -> customized
         } ddr1;
-        struct _DDR2
-        {
+        struct {
             unsigned int m_mode1;
             unsigned int m_mode2;
             unsigned int m_mode3;       // dram driving strength  -> customized
@@ -504,8 +490,7 @@ typedef struct {
             unsigned int m_mode63;
             unsigned int m_vender_id;
         } ddr2;
-        struct
-        {
+        struct {
             unsigned int m_mode0;
             unsigned int m_mode1;
             unsigned int m_mode2;
@@ -551,16 +536,13 @@ typedef struct {
     int     m_dram_rank_size[4];
     int     m_reserved[10];
 
-    union DDR
-    {
-        struct _LPDDR1
-        {
+    union {
+        struct {
             unsigned int m_mode_reg;
             unsigned int m_ext_mode_reg;    // dram driving strength -> customized
         } lp_ddr1;
 
-        struct _LPDDR2
-        {
+        struct {
             unsigned int m_mode_reg_1;
             unsigned int m_mode_reg_2;
             unsigned int m_mode_reg_3;
@@ -569,8 +551,7 @@ typedef struct {
             unsigned int m_mode_reg_63;
         } lp_ddr2;
 
-        struct _LPDDR3
-        {
+        struct {
             unsigned int m_mode_reg_1;
             unsigned int m_mode_reg_2;
             unsigned int m_mode_reg_3;
@@ -579,8 +560,7 @@ typedef struct {
             unsigned int m_mode_reg_63;
         } lp_ddr3;
 
-        struct _PCDDR3
-        {
+        struct {
             unsigned int m_mode_reg_0;
             unsigned int m_mode_reg_1;
             unsigned int m_mode_reg_2;
@@ -626,16 +606,13 @@ typedef struct {
     int     m_dram_rank_size[4];
     int     m_reserved[10];
 
-    union DDR
-    {
-        struct _LPDDR1
-        {
+    union {
+        struct {
             unsigned int m_mode_reg;
             unsigned int m_ext_mode_reg;    // dram driving strength -> customized
         } lp_ddr1;
 
-        struct _LPDDR2
-        {
+        struct {
             unsigned int m_mode_reg_1;
             unsigned int m_mode_reg_2;
             unsigned int m_mode_reg_3;
@@ -644,8 +621,7 @@ typedef struct {
             unsigned int m_mode_reg_63;
         } lp_ddr2;
 
-        struct _LPDDR3
-        {
+        struct {
             unsigned int m_mode_reg_1;
             unsigned int m_mode_reg_2;
             unsigned int m_mode_reg_3;
@@ -654,8 +630,7 @@ typedef struct {
             unsigned int m_mode_reg_63;
         } lp_ddr3;
 
-        struct _PCDDR3
-        {
+        struct {
             unsigned int m_mode_reg_0;
             unsigned int m_mode_reg_1;
             unsigned int m_mode_reg_2;
@@ -700,16 +675,13 @@ typedef struct {
     int     m_dram_rank_size[4];
     int     m_reserved[10];
 
-    union DDR
-    {
-        struct _LPDDR1
-        {
+    union {
+        struct {
             unsigned int m_mode_reg;
             unsigned int m_ext_mode_reg;    // dram driving strength -> customized
         } lp_ddr1;
 
-        struct _LPDDR2
-        {
+        struct {
             unsigned int m_mode_reg_1;
             unsigned int m_mode_reg_2;
             unsigned int m_mode_reg_3;
@@ -718,8 +690,7 @@ typedef struct {
             unsigned int m_mode_reg_63;
         } lp_ddr2;
 
-        struct _LPDDR3
-        {
+        struct {
             unsigned int m_mode_reg_1;
             unsigned int m_mode_reg_2;
             unsigned int m_mode_reg_3;
@@ -767,16 +738,13 @@ typedef struct {
     int     m_dram_rank_size[4];
     int     m_reserved[10];
 
-    union DDR
-    {
-        struct _LPDDR1
-        {
+    union {
+        struct {
             unsigned int m_mode_reg;
             unsigned int m_ext_mode_reg;    // dram driving strength -> customized
         } lp_ddr1;
 
-        struct _LPDDR2
-        {
+        struct {
             unsigned int m_mode_reg_1;
             unsigned int m_mode_reg_2;
             unsigned int m_mode_reg_3;
@@ -785,8 +753,7 @@ typedef struct {
             unsigned int m_mode_reg_63;
         } lp_ddr2;
 
-        struct _LPDDR3
-        {
+        struct {
             unsigned int m_mode_reg_1;
             unsigned int m_mode_reg_2;
             unsigned int m_mode_reg_3;
@@ -795,8 +762,7 @@ typedef struct {
             unsigned int m_mode_reg_63;
         } lp_ddr3;
 
-        struct _PCDDR3
-        {
+        struct {
             unsigned int m_mode_reg_0;
             unsigned int m_mode_reg_1;
             unsigned int m_mode_reg_2;
@@ -852,15 +818,12 @@ typedef struct
     int   m_dramc_test2_4_val;
     int   m_dram_rank_size[4];
     int   m_reserved[10];
-    union
-    {
-        struct _LPDDR1
-        {
+    union {
+        struct {
             unsigned int   m_mode_reg;
             unsigned int   m_ext_mode_reg;
         }lp_ddr1;
-        struct _LPDDR2
-        {
+        struct {
             unsigned int m_mode_reg_1;
             unsigned int m_mode_reg_2;
             unsigned int m_mode_reg_3;
@@ -868,15 +831,13 @@ typedef struct
             unsigned int m_mode_reg_10;
             unsigned int m_mode_reg_63;
         } lp_ddr2;
-        struct _PCDDR3
-        {
+        struct {
             unsigned int m_mode_reg_0;
             unsigned int m_mode_reg_1;
             unsigned int m_mode_reg_2;
             unsigned int m_mode_reg_3;
-        }pc_ddr3;
-        struct _LPDDR3
-        {
+        } pc_ddr3;
+        struct {
             unsigned int m_mode_reg_1;
             unsigned int m_mode_reg_2;
             unsigned int m_mode_reg_3;
@@ -924,16 +885,13 @@ typedef struct {
     int     m_dram_rank_size[4];
     int     m_reserved[10];
 
-    union DDR
-    {
-        struct _LPDDR1
-        {
+    union {
+        struct {
             unsigned int m_mode_reg;
             unsigned int m_ext_mode_reg;    // dram driving strength -> customized
         } lp_ddr1;
 
-        struct _LPDDR2
-        {
+        struct {
             unsigned int m_mode_reg_1;
             unsigned int m_mode_reg_2;
             unsigned int m_mode_reg_3;
@@ -942,8 +900,7 @@ typedef struct {
             unsigned int m_mode_reg_63;
         } lp_ddr2;
 
-        struct _LPDDR3
-        {
+        struct {
             unsigned int m_mode_reg_1;
             unsigned int m_mode_reg_2;
             unsigned int m_mode_reg_3;
@@ -952,8 +909,7 @@ typedef struct {
             unsigned int m_mode_reg_63;
         } lp_ddr3;
 
-        struct _PCDDR3
-        {
+        struct {
             unsigned int m_mode_reg_0;
             unsigned int m_mode_reg_1;
             unsigned int m_mode_reg_2;
@@ -1007,15 +963,12 @@ typedef struct
     int   m_dramc_test2_4_val;
     int   m_dram_rank_size[4];
     int   m_reserved[10];
-    union
-    {
-        struct _LPDDR1
-        {
+    union {
+        struct {
             unsigned int   m_mode_reg;
             unsigned int   m_ext_mode_reg;
-        }lp_ddr1;
-        struct _LPDDR2
-        {
+        } lp_ddr1;
+        struct {
             unsigned int m_mode_reg_1;
             unsigned int m_mode_reg_2;
             unsigned int m_mode_reg_3;
@@ -1023,15 +976,13 @@ typedef struct
             unsigned int m_mode_reg_10;
             unsigned int m_mode_reg_63;
         } lp_ddr2;
-        struct _PCDDR3
-        {
+        struct {
             unsigned int m_mode_reg_0;
             unsigned int m_mode_reg_1;
             unsigned int m_mode_reg_2;
             unsigned int m_mode_reg_3;
         }pc_ddr3;
-        struct _LPDDR3
-        {
+        struct {
             unsigned int m_mode_reg_1;
             unsigned int m_mode_reg_2;
             unsigned int m_mode_reg_3;
@@ -1083,10 +1034,8 @@ typedef struct
     int   DRAM_RANK_SIZE[4];
     int   reserved[10];
 
-    union
-    {
-        struct
-        {
+    union {
+        struct {
             int   LPDDR2_MODE_REG_1;
             int   LPDDR2_MODE_REG_2;
             int   LPDDR2_MODE_REG_3;
@@ -1094,13 +1043,11 @@ typedef struct
             int   LPDDR2_MODE_REG_10;
             int   LPDDR2_MODE_REG_63;
         };
-        struct
-        {
+        struct {
             int   DDR1_MODE_REG;
             int   DDR1_EXT_MODE_REG;
         };
-        struct
-        {
+        struct {
             int   PCDDR3_MODE_REG0;
             int   PCDDR3_MODE_REG1;
             int   PCDDR3_MODE_REG2;
@@ -1108,8 +1055,7 @@ typedef struct
             int   PCDDR3_MODE_REG4;
             int   PCDDR3_MODE_REG5;			
         };
-        struct
-        {
+        struct {
             int   LPDDR3_MODE_REG_1;
             int   LPDDR3_MODE_REG_2;
             int   LPDDR3_MODE_REG_3;
@@ -1161,10 +1107,8 @@ typedef struct
     int   DRAM_RANK_SIZE[4];
     int   reserved[10];
 
-    union
-    {
-        struct
-        {
+    union {
+        struct {
             int   LPDDR2_MODE_REG_1;
             int   LPDDR2_MODE_REG_2;
             int   LPDDR2_MODE_REG_3;
@@ -1172,13 +1116,11 @@ typedef struct
             int   LPDDR2_MODE_REG_10;
             int   LPDDR2_MODE_REG_63;
         };
-        struct
-        {
+        struct {
             int   DDR1_MODE_REG;
             int   DDR1_EXT_MODE_REG;
         };
-        struct
-        {
+        struct {
             int   PCDDR3_MODE_REG0;
             int   PCDDR3_MODE_REG1;
             int   PCDDR3_MODE_REG2;
@@ -1186,8 +1128,7 @@ typedef struct
             int   PCDDR3_MODE_REG4;
             int   PCDDR3_MODE_REG5;			
         };
-        struct
-        {
+        struct {
             int   LPDDR3_MODE_REG_1;
             int   LPDDR3_MODE_REG_2;
             int   LPDDR3_MODE_REG_3;
@@ -1241,10 +1182,8 @@ typedef struct
     int   DRAMC_TEST2_4_VAL;    
     int   DRAM_RANK_SIZE[4];
     int   reserved[10];
-    union
-    {
-        struct
-        {
+    union {
+        struct {
             int   iLPDDR2_MODE_REG_1;
             int   iLPDDR2_MODE_REG_2;
             int   iLPDDR2_MODE_REG_3;
@@ -1252,20 +1191,17 @@ typedef struct
             int   iLPDDR2_MODE_REG_10;
             int   iLPDDR2_MODE_REG_63;
         };
-        struct
-        {
+        struct {
             int   iDDR1_MODE_REG;
             int   iDDR1_EXT_MODE_REG;
         };
-        struct
-        {
+        struct {
             int   iPCDDR3_MODE_REG0;
             int   iPCDDR3_MODE_REG1;
             int   iPCDDR3_MODE_REG2;
             int   iPCDDR3_MODE_REG3;
         };
-        struct
-        {
+        struct {
             int   iLPDDR3_MODE_REG_1;
             int   iLPDDR3_MODE_REG_2;
             int   iLPDDR3_MODE_REG_3;
@@ -1406,10 +1342,8 @@ typedef struct
     int   reserved[10];
 
 #if 0
-    union
-    {
-        struct
-        {
+    union {
+        struct {
             int   iLPDDR2_MODE_REG_1;
             int   iLPDDR2_MODE_REG_2;
             int   iLPDDR2_MODE_REG_3;
@@ -1417,20 +1351,17 @@ typedef struct
             int   iLPDDR2_MODE_REG_10;
             int   iLPDDR2_MODE_REG_63;
         };
-        struct
-        {
+        struct {
             int   iDDR1_MODE_REG;
             int   iDDR1_EXT_MODE_REG;
         };
-        struct
-        {
+        struct {
             int   iPCDDR3_MODE_REG0;
             int   iPCDDR3_MODE_REG1;
             int   iPCDDR3_MODE_REG2;
             int   iPCDDR3_MODE_REG3;
         };
-        struct
-        {
+        struct {
             int   iLPDDR3_MODE_REG_1;
             int   iLPDDR3_MODE_REG_2;
             int   iLPDDR3_MODE_REG_3;
@@ -1509,8 +1440,7 @@ typedef struct {
 
     // used in chips for SV5
     unsigned int        m_ver;
-    union
-    {
+    union {
         //EMI_SETTINGS_v05 m_emi05;
         EMI_SETTINGS_v06 m_emi06;
         EMI_SETTINGS_v07 m_emi07;
@@ -1660,6 +1590,7 @@ typedef struct {
     int *p_stopflag;
 }RomMemChecksumArg;
 typedef struct {
+    unsigned int dummy;
     // dummy 
 } RomMemChecksumResult;
 
@@ -1721,7 +1652,7 @@ LIBEXPORT int __stdcall DL_GetInfo(DL_HANDLE_T  dl_handle, DL_INFO  *p_dl_info);
 LIBEXPORT int __stdcall DL_IsReady(DL_HANDLE_T  dl_handle, ROM_INFO  *p_rom_info, BL_INFO  *p_bl_info, _BOOL  check_if_updated);
 _DEPRECATED_API int __stdcall DL_GetJumpTableInfo(DL_HANDLE_T  dl_handle, MTK_JumpTable  *p_jmptbl_info);
 LIBEXPORT int __stdcall DL_GetProjectId(DL_HANDLE_T  dl_handle, char *buf, unsigned int buf_len);
-LIBEXPORT int __stdcall DL_GetDRAMSetting(DL_HANDLE_T  dl_handle, DRAM_SETTING  *dram_cfg, DA_REPORT_T *da_report);
+LIBEXPORT int __stdcall DL_GetDRAMSetting(DL_HANDLE_T  dl_handle, DRAM_SETTING  *dram_cfg, struct DA_REPORT_T *da_report);
 LIBEXPORT int __stdcall DL_ResourceProjectIdComparisonSetting(DL_HANDLE_T  dl_handle, _BOOL  enable);
 LIBEXPORT int __stdcall DL_AutoLoadByScatRegionName(DL_HANDLE_T  dl_handle, const char *full_filepath, unsigned char allow_rom_type, _BOOL is_scatter_file);
 LIBEXPORT int __stdcall DL_AutoLoadRomImages(DL_HANDLE_T dl_handle, const char *scatter_file);

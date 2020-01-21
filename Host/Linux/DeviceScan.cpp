@@ -160,25 +160,27 @@ bool DeviceScan::GetDeviceInfo(
 
     int prefixLen = strlen(prefix);
     int length = lastPosition - firstPosition - prefixLen;
-    char path_without_sys_prefix [UEVENT_BUFFER_SIZE]={0};
-    char path_without_sys_prefix_up_dir[UEVENT_BUFFER_SIZE]={0};
-    char path_with_sys_prefix[UEVENT_BUFFER_SIZE]={0};
-    char path_of_pid[UEVENT_BUFFER_SIZE]={0};
-    char path_of_vid[UEVENT_BUFFER_SIZE]={0};
+    char path_without_sys_prefix_up_dir[UEVENT_BUFFER_SIZE] = { 0 };
+    char path_without_sys_prefix[2 * UEVENT_BUFFER_SIZE] = { 0 };
+    char path_with_sys_prefix[UEVENT_BUFFER_SIZE] = { 0 };
+    char path_of_pid[2 * UEVENT_BUFFER_SIZE] = { 0 };
+    char path_of_vid[2 * UEVENT_BUFFER_SIZE] = { 0 };
 
-    if(firstPosition && lastPosition)
-    {
-        memcpy(path_without_sys_prefix,firstPosition+prefixLen,length);
+    if (firstPosition && lastPosition) {
+        memcpy(path_without_sys_prefix, firstPosition + prefixLen, length);
 
-        char* lastToken=rindex(path_without_sys_prefix,'/');
+        char* lastToken = rindex(path_without_sys_prefix,'/');
         int len = strlen(lastToken);
 
-        memcpy(path_without_sys_prefix_up_dir,path_without_sys_prefix,length-len);
+        memcpy(path_without_sys_prefix_up_dir, path_without_sys_prefix, length - len);
 
-        sprintf(path_with_sys_prefix,"%s%s",sysPrefix,path_without_sys_prefix_up_dir);
+        snprintf(path_with_sys_prefix, 2 * UEVENT_BUFFER_SIZE - 1, "%s%s", sysPrefix, path_without_sys_prefix_up_dir);
+        path_with_sys_prefix[2 * UEVENT_BUFFER_SIZE - 1] = 0;
 
-        sprintf(path_of_vid,"%s/%s",path_with_sys_prefix,VID);
-        sprintf(path_of_pid,"%s/%s",path_with_sys_prefix,PID);
+        snprintf(path_of_vid, 2 * UEVENT_BUFFER_SIZE - 1, "%s/%s", path_with_sys_prefix, VID);
+        path_of_vid[2 * UEVENT_BUFFER_SIZE - 1] = 0;
+        snprintf(path_of_pid, 2 * UEVENT_BUFFER_SIZE - 1, "%s/%s", path_with_sys_prefix, PID);
+        path_of_pid[2 * UEVENT_BUFFER_SIZE - 1] = 0;
 
         //read file
         char tmpbuf[5] = {0};

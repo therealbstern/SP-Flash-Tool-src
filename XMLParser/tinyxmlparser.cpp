@@ -104,6 +104,8 @@ void TiXmlBase::ConvertUTF32ToUTF8( unsigned long input, char* output, int* leng
 
 	output += *length;
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
 	// Scary scary fall throughs.
 	switch (*length) 
 	{
@@ -123,6 +125,7 @@ void TiXmlBase::ConvertUTF32ToUTF8( unsigned long input, char* output, int* leng
 			--output; 
 			*output = (char)(input | FIRST_BYTE_MARK[*length]);
 	}
+#pragma GCC diagnostic pop
 }
 
 

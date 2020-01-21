@@ -1,33 +1,30 @@
 #include "ReadbackSettingAssist.h"
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-copy"
 #include <QString>
+#pragma GCC diagnostic pop
 #include "../BootRom/host.h"
 #include "../Utility/FileUtils.h"
 #include "../Err/Exception.h"
 #include "../Err/FlashToolErrorCodeDef.h"
 #include "../Logger/Log.h"
 
-namespace APCore
-{
+namespace APCore {
 
-std::string APCore::ReadbackSettingAssist::GetDirNameFromPath(const std::string &path)
-{
+std::string APCore::ReadbackSettingAssist::GetDirNameFromPath(const std::string &path) {
     int pos = path.find_last_of(C_SEP_CHR);
     return path.substr(0, pos);
 }
 
-
-std::string APCore::ReadbackSettingAssist::GetFileNameFromPath(const std::string &path)
-{
+std::string APCore::ReadbackSettingAssist::GetFileNameFromPath(const std::string &path) {
     int pos = path.find_last_of(C_SEP_CHR);
     return path.substr(pos+1);
 }
 
 
-std::string APCore::ReadbackSettingAssist::GenerateValidPath(const std::string &path)
-{
+std::string APCore::ReadbackSettingAssist::GenerateValidPath(const std::string &path) {
     std::string _path = path;
-    if (QString(_path.c_str()).trimmed().isEmpty())
-    {
+    if (QString(_path.c_str()).trimmed().isEmpty()) {
         LOGE("read file name error: readback file name has empty!\n");
         THROW_APP_EXCEPTION(FT_FILE_IS_NOT_EXIST, "readback file name has empty!");
     }

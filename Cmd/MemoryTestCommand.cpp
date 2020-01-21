@@ -19,23 +19,22 @@ int __stdcall MemoryTestCommand::cb_memorytest_progress(
 {
     Q_UNUSED(total_bytes);
     FlashTool_MemoryTest_Arg *mt_arg = (FlashTool_MemoryTest_Arg *)usr_arg;
-    if(mt_arg != NULL && instance != NULL)
-    {
-        if(mt_arg->m_test_method == HW_MEM_DATA_BUS_TEST)
+    if ((mt_arg != NULL) && (instance != NULL)) {
+        if (mt_arg->m_test_method == HW_MEM_DATA_BUS_TEST)
         {
             instance->UpdateUI(QString().sprintf("[D%d]",progress));
         }
-        else if(mt_arg->m_test_method == HW_MEM_ADDR_BUS_TEST)
+        else if (mt_arg->m_test_method == HW_MEM_ADDR_BUS_TEST)
         {
             instance->UpdateUI(QString().sprintf("[A%d]",progress));
         }
-        else if(mt_arg->m_test_method == HW_MEM_PATTERN_TEST)
+        else if (mt_arg->m_test_method == HW_MEM_PATTERN_TEST)
         {
           //  instance->UpdateUI(QString().sprintf("(0x%08X)",progress));
         }
-        else if(mt_arg->m_test_method == HW_MEM_DRAM_FLIP_TEST)
+        else if (mt_arg->m_test_method == HW_MEM_DRAM_FLIP_TEST)
         {
-            instance->UpdateUI(QString().sprintf("[FLIP]%d%%\thave test len: 0x%08X", progress, finished_bytes));
+            instance->UpdateUI(QString().sprintf("[FLIP]%d%%\thave test len: 0x%08llX", progress, finished_bytes));
         }
     }
     return 0;
@@ -45,7 +44,7 @@ int __stdcall MemoryTestCommand::cb_memorytest_progress(
 inline int CHECK_METEST_RESULT(int ret)
 {
     LOG("checking flashtoollib ret value(%d)",ret);
-    if(ret != S_DONE)
+    if (ret != S_DONE)
     {
         THROW_BROM_EXCEPTION(ret,0);
     }
@@ -55,7 +54,7 @@ inline int CHECK_METEST_RESULT(int ret)
 MemoryTestCommand::MemoryTestCommand(APKey key, const MemoryTestSetting *setting)
     : ICommand(key)
 {
-    if(setting != NULL)
+    if (setting != NULL)
     {
         memtest_setting = *setting;
     }
@@ -69,7 +68,7 @@ MemoryTestCommand::~MemoryTestCommand()
 
 void MemoryTestCommand::exec(const QSharedPointer<Connection> &conn)
 {
-    if(memtest_setting.ram_test()||
+    if (memtest_setting.ram_test()||
             memtest_setting.emmc_flash_test()||
             memtest_setting.nand_flash_test()||
             memtest_setting.ufs_flash_test() ||
@@ -78,7 +77,7 @@ void MemoryTestCommand::exec(const QSharedPointer<Connection> &conn)
     conn->ConnectDA(FIRST_DA, _TRUE);
 
     //1. enable DRAM if not
-    if(conn->da_report().m_ext_ram_ret != S_DONE)
+    if (conn->da_report().m_ext_ram_ret != S_DONE)
     {
         LOG("ext RAM not enabled, enabling it now...");
         EnableDRAM(conn->da_report(),
@@ -87,7 +86,7 @@ void MemoryTestCommand::exec(const QSharedPointer<Connection> &conn)
     }
 
     //2. update memory detection report if not DRAM flip test
-    if(!memtest_setting.dram_flip_test())
+    if (!memtest_setting.dram_flip_test())
         UpdateMemoryTestDetection(conn->da_report());
 
     FlashTool_MemoryTest_Arg* mt_arg = memtest_arg_.raw_arg();
@@ -98,11 +97,11 @@ void MemoryTestCommand::exec(const QSharedPointer<Connection> &conn)
     memset(&mt_result, 0, sizeof(mt_result));
 
     //3. RAM test
-    if(memtest_setting.ram_test())
+    if (memtest_setting.ram_test())
     {
         UpdateUI("============\t RAM Test \t============\n", Qt::cyan);
 
-        if(HW_RAM_UNKNOWN == conn->da_report().m_ext_ram_type)
+        if (HW_RAM_UNKNOWN == conn->da_report().m_ext_ram_type)
         {
             UpdateUI("SKIP! External RAM was not detected!\n", Qt::red);
         }
@@ -113,11 +112,11 @@ void MemoryTestCommand::exec(const QSharedPointer<Connection> &conn)
     }
 
     //4. NAND test
-    if(memtest_setting.nand_flash_test())
+    if (memtest_setting.nand_flash_test())
     {
         UpdateUI("============\t NAND Test \t============\n", Qt::cyan);
 
-        if(S_DONE != conn->da_report().m_nand_ret)
+        if (S_DONE != conn->da_report().m_nand_ret)
         {
             UpdateUI("SKIP! NAND Flash was not detected!\n", Qt::red);
         }
@@ -128,11 +127,11 @@ void MemoryTestCommand::exec(const QSharedPointer<Connection> &conn)
     }
 
     //5. EMMC test
-    if(memtest_setting.emmc_flash_test())
+    if (memtest_setting.emmc_flash_test())
     {
         UpdateUI("============\t EMMC Test \t============\n", Qt::cyan);
 
-        if(S_DONE != conn->da_report().m_emmc_ret)
+        if (S_DONE != conn->da_report().m_emmc_ret)
         {
             UpdateUI("SKIP! EMMC was not detected!\n", Qt::red);
         }
@@ -143,11 +142,11 @@ void MemoryTestCommand::exec(const QSharedPointer<Connection> &conn)
     }
 
     //6. UFS test
-    if(memtest_setting.ufs_flash_test())
+    if (memtest_setting.ufs_flash_test())
     {
         UpdateUI("============\t UFS Test \t============\n", Qt::cyan);
 
-        if(S_DONE != conn->da_report().m_ufs_ret)
+        if (S_DONE != conn->da_report().m_ufs_ret)
         {
             UpdateUI("SKIP! UFS was not detected!\n", Qt::red);
         }
@@ -158,11 +157,11 @@ void MemoryTestCommand::exec(const QSharedPointer<Connection> &conn)
     }
 
     //7. DRAM flip test
-    if(memtest_setting.dram_flip_test())
+    if (memtest_setting.dram_flip_test())
     {
         UpdateUI("============\t DRAM Flip Test \t============\n", Qt::cyan);
         QString msg;
-        if(0x20000 <= conn->da_report().m_ext_ram_size)
+        if (0x20000 <= conn->da_report().m_ext_ram_size)
         {
             msg = QString("\tDRAM Size = 0x%1 (%2MB/%3Mb)\n").arg(conn->da_report().m_ext_ram_size, 8, 16, QLatin1Char('0'))
                     .arg(conn->da_report().m_ext_ram_size/1024/1024)
@@ -178,7 +177,7 @@ void MemoryTestCommand::exec(const QSharedPointer<Connection> &conn)
             UpdateUI(msg);
         }
         int ret = DRAMFlipTest(mt_arg, &mt_result, conn->da_report(),conn->FTHandle());
-        if(ret != S_DONE)
+        if (ret != S_DONE)
         {
             THROW_BROM_EXCEPTION(ret,0);
         }
@@ -190,40 +189,38 @@ void MemoryTestCommand::exec(const QSharedPointer<Connection> &conn)
 void MemoryTestCommand::UpdateUI(const QString& text, QColor color)
 {
     MEMORY_TEST_UI_CALLBACK callback = memtest_setting.cb_gui();
-    if(callback != NULL)
+    if (callback != NULL)
     {
         callback(text, color);
     }
 }
 
-void MemoryTestCommand::UpdateMemoryTestDetection(const DA_REPORT_T &da_report)
-{
+void MemoryTestCommand::UpdateMemoryTestDetection(const DA_REPORT_T &da_report) {
     UpdateUI("============ Memory Detection Report ===========\n", Qt::cyan);
 
     QString msg;
     //internal SRAM report
     UpdateUI("Internal RAM:\n");
-    switch(da_report.m_int_sram_ret)
-    {
-    case S_DONE:
-        QString("\tSize = 0x%1 (%2KB)\n").arg(da_report.m_int_sram_size, 8, 16)
-                            .arg(da_report.m_int_sram_size/1024);
+    switch(da_report.m_int_sram_ret) {
+        case S_DONE:
+            msg = QString("\tSize = 0x%1 (%2KB)\n")
+                .arg(da_report.m_int_sram_size, 8, 16)
+                .arg(da_report.m_int_sram_size / 1024);
 
-        UpdateUI(msg);
-        break;
+            UpdateUI(msg);
+            break;
 
-    case S_DA_RAM_FLOARTING:
-        UpdateUI("\tERROR: Internal SRAM data is floating!!\n", Qt::red);
-        break;
+        case S_DA_RAM_FLOARTING:
+            UpdateUI("\tERROR: Internal SRAM data is floating!!\n", Qt::red);
+            break;
 
-    case S_DA_RAM_UNACCESSABLE:
-        UpdateUI("\tERROR: Internal SRAM data is un-accessible!!\n", Qt::red);
-        break;
+        case S_DA_RAM_UNACCESSABLE:
+            UpdateUI("\tERROR: Internal SRAM data is un-accessible!!\n", Qt::red);
+            break;
 
-    case S_DA_RAM_ERROR:
-    default:
-        UpdateUI("\tERROR: Internal SRAM was not detected!!\n", Qt::red);
-        break;
+        case S_DA_RAM_ERROR:
+        default:
+            UpdateUI("\tERROR: Internal SRAM was not detected!!\n", Qt::red);
     }
 
     //external RAM(SRAM/DRAM) report
@@ -231,7 +228,7 @@ void MemoryTestCommand::UpdateMemoryTestDetection(const DA_REPORT_T &da_report)
     switch(da_report.m_ext_ram_ret)
     {
     case S_DONE:
-        if(HW_RAM_DRAM == da_report.m_ext_ram_type)
+        if (HW_RAM_DRAM == da_report.m_ext_ram_type)
         {
             UpdateUI("\tType = DRAM\n");
         }
@@ -240,19 +237,19 @@ void MemoryTestCommand::UpdateMemoryTestDetection(const DA_REPORT_T &da_report)
             UpdateUI("\tType = SRAM\n");
         }
 
-        if(0x20000 <= da_report.m_ext_ram_size)
-        {
-            msg = QString("\tSize = 0x%1 (%2MB/%3Mb)\n").arg(da_report.m_ext_ram_size, 8, 16, QLatin1Char('0'))
-                    .arg(da_report.m_ext_ram_size/1024/1024)
-                    .arg(da_report.m_ext_ram_size/1024*8/1024);
+        if (0x20000 <= da_report.m_ext_ram_size) {
+            msg = QString("\tSize = 0x%1 (%2MB/%3Mb)\n")
+                .arg(da_report.m_ext_ram_size, 8, 16, QLatin1Char('0'))
+                .arg(da_report.m_ext_ram_size / 1024 / 1024)
+                .arg(da_report.m_ext_ram_size / 1024 * 8 / 1024);
 
             UpdateUI(msg);
         }
         else
         {
             msg = QString("\tSize = 0x%1 (%2K/%3Kb)\n").arg(da_report.m_ext_ram_size, 8, 16, QLatin1Char('0'))
-                    .arg(da_report.m_ext_ram_size/1024)
-                    .arg(da_report.m_ext_ram_size/1024*8);
+                .arg(da_report.m_ext_ram_size/1024)
+                .arg(da_report.m_ext_ram_size/1024*8);
             UpdateUI(msg);
         }
         break;
@@ -273,14 +270,14 @@ void MemoryTestCommand::UpdateMemoryTestDetection(const DA_REPORT_T &da_report)
 
     //NAND flash report
     UpdateUI("NAND Flash:\n");
-    if(S_DONE == da_report.m_nand_ret)
+    if (S_DONE == da_report.m_nand_ret)
     {
         msg = QString("\tDevice Id = \"%1\" (%2)\n"
-                      "\tSize = 0x%3 (%4MB/%5Mb)\n").arg(GetNandFlashNameByTypeId(da_report.m_nand_flash_id))
-                .arg(da_report.m_nand_flash_id)
-                .arg(da_report.m_nand_flash_size, 8, 16)
-                .arg(da_report.m_nand_flash_size/1024/1024)
-                .arg(da_report.m_nand_flash_size/1024*8/1024);
+            "\tSize = 0x%3 (%4MB/%5Mb)\n").arg(GetNandFlashNameByTypeId(da_report.m_nand_flash_id))
+            .arg(da_report.m_nand_flash_id)
+            .arg(da_report.m_nand_flash_size, 8, 16)
+            .arg(da_report.m_nand_flash_size/1024/1024)
+            .arg(da_report.m_nand_flash_size/1024*8/1024);
 
         UpdateUI(msg);
     }
@@ -291,30 +288,30 @@ void MemoryTestCommand::UpdateMemoryTestDetection(const DA_REPORT_T &da_report)
 
     //EMMC report
     UpdateUI("EMMC: \n");
-    if(S_DONE == da_report.m_emmc_ret){
+    if (S_DONE == da_report.m_emmc_ret){
         msg = QString("\t EMMC_PART_BOOT1 \tSize = 0x%1(%2MB)\n"
-                      "\t EMMC_PART_BOOT2 \tSize = 0x%3(%4MB)\n"
-                      "\t EMMC_PART_RPMB \tSize = 0x%5(%6MB)\n"
-                      "\t EMMC_PART_GP1 \tSize = 0x%7(%8MB)\n"
-                      "\t EMMC_PART_GP2 \tSize = 0x%9(%10MB)\n"
-                      "\t EMMC_PART_GP3 \tSize = 0x%11(%12MB)\n"
-                      "\t EMMC_PART_GP4 \tSize = 0x%13(%14MB)\n"
-                      "\t EMMC_PART_USER \tSize = 0x%15(%16MB)\n").arg(da_report.m_emmc_boot1_size, 16, 16, QLatin1Char('0'))
-                .arg(da_report.m_emmc_boot1_size/1024/1024)
-                .arg(da_report.m_emmc_boot2_size, 16, 16, QLatin1Char('0'))
-                .arg(da_report.m_emmc_boot2_size/1024/1024)
-                .arg(da_report.m_emmc_rpmb_size,16,16,QLatin1Char('0'))
-                .arg(da_report.m_emmc_rpmb_size/1024/1024)
-                .arg(da_report.m_emmc_gp1_size, 16,16,QLatin1Char('0'))
-                .arg(da_report.m_emmc_gp1_size/1024/1024)
-                .arg(da_report.m_emmc_gp2_size, 16,16,QLatin1Char('0'))
-                .arg(da_report.m_emmc_gp3_size/1024/1024)
-                .arg(da_report.m_emmc_gp3_size, 16,16,QLatin1Char('0'))
-                .arg(da_report.m_emmc_gp3_size/1024/1024)
-                .arg(da_report.m_emmc_gp4_size, 16,16,QLatin1Char('0'))
-                .arg(da_report.m_emmc_gp4_size/1024/1024)
-                .arg(da_report.m_emmc_ua_size, 16,16, QLatin1Char('0'))
-                .arg(da_report.m_emmc_ua_size/1024/1024);
+            "\t EMMC_PART_BOOT2 \tSize = 0x%3(%4MB)\n"
+            "\t EMMC_PART_RPMB \tSize = 0x%5(%6MB)\n"
+            "\t EMMC_PART_GP1 \tSize = 0x%7(%8MB)\n"
+            "\t EMMC_PART_GP2 \tSize = 0x%9(%10MB)\n"
+            "\t EMMC_PART_GP3 \tSize = 0x%11(%12MB)\n"
+            "\t EMMC_PART_GP4 \tSize = 0x%13(%14MB)\n"
+            "\t EMMC_PART_USER \tSize = 0x%15(%16MB)\n").arg(da_report.m_emmc_boot1_size, 16, 16, QLatin1Char('0'))
+            .arg(da_report.m_emmc_boot1_size/1024/1024)
+            .arg(da_report.m_emmc_boot2_size, 16, 16, QLatin1Char('0'))
+            .arg(da_report.m_emmc_boot2_size/1024/1024)
+            .arg(da_report.m_emmc_rpmb_size,16,16,QLatin1Char('0'))
+            .arg(da_report.m_emmc_rpmb_size/1024/1024)
+            .arg(da_report.m_emmc_gp1_size, 16,16,QLatin1Char('0'))
+            .arg(da_report.m_emmc_gp1_size/1024/1024)
+            .arg(da_report.m_emmc_gp2_size, 16,16,QLatin1Char('0'))
+            .arg(da_report.m_emmc_gp3_size/1024/1024)
+            .arg(da_report.m_emmc_gp3_size, 16,16,QLatin1Char('0'))
+            .arg(da_report.m_emmc_gp3_size/1024/1024)
+            .arg(da_report.m_emmc_gp4_size, 16,16,QLatin1Char('0'))
+            .arg(da_report.m_emmc_gp4_size/1024/1024)
+            .arg(da_report.m_emmc_ua_size, 16,16, QLatin1Char('0'))
+            .arg(da_report.m_emmc_ua_size/1024/1024);
 
         UpdateUI(msg);
     }
@@ -325,16 +322,16 @@ void MemoryTestCommand::UpdateMemoryTestDetection(const DA_REPORT_T &da_report)
 
     //UFS report
     UpdateUI("UFS: \n");
-    if(S_DONE == da_report.m_ufs_ret){
+    if (S_DONE == da_report.m_ufs_ret){
         msg = QString("\t UFS_PART_LU0 \tSize = 0x%1(%2MB)\n"
-                      "\t UFS_PART_LU1 \tSize = 0x%3(%4MB)\n"
-                      "\t UFS_PART_LU2 \tSize = 0x%5(%6MB)\n"
-                      ).arg(da_report.m_ufs_lu0_size, 16, 16, QLatin1Char('0'))
-                .arg(da_report.m_ufs_lu0_size/1024/1024)
-                .arg(da_report.m_ufs_lu1_size, 16, 16, QLatin1Char('0'))
-                .arg(da_report.m_ufs_lu1_size/1024/1024)
-                .arg(da_report.m_ufs_lu2_size,16,16,QLatin1Char('0'))
-                .arg(da_report.m_ufs_lu2_size/1024/1024);
+            "\t UFS_PART_LU1 \tSize = 0x%3(%4MB)\n"
+            "\t UFS_PART_LU2 \tSize = 0x%5(%6MB)\n"
+            ).arg(da_report.m_ufs_lu0_size, 16, 16, QLatin1Char('0'))
+            .arg(da_report.m_ufs_lu0_size/1024/1024)
+            .arg(da_report.m_ufs_lu1_size, 16, 16, QLatin1Char('0'))
+            .arg(da_report.m_ufs_lu1_size/1024/1024)
+            .arg(da_report.m_ufs_lu2_size,16,16,QLatin1Char('0'))
+            .arg(da_report.m_ufs_lu2_size/1024/1024);
 
         UpdateUI(msg);
     }
@@ -346,26 +343,26 @@ void MemoryTestCommand::UpdateMemoryTestDetection(const DA_REPORT_T &da_report)
 
 
 void MemoryTestCommand::EnableDRAM(DA_REPORT_T &da_report,
-                FLASHTOOL_API_HANDLE_T ft_handle,
-                DL_HANDLE_T dl_handle)
+    FLASHTOOL_API_HANDLE_T ft_handle,
+    DL_HANDLE_T dl_handle)
 {
     int ret;
     DRAM_SETTING dram_setting;
 
 #if 0
     unsigned int nand_id = ((unsigned int)da_report.m_nand_flash_dev_code_1)<<8 |
-                           ((unsigned int)da_report.m_nand_flash_dev_code_2);
+        ((unsigned int)da_report.m_nand_flash_dev_code_2);
 #endif
 
     ret = DL_GetDRAMSetting(dl_handle, &dram_setting, &da_report);
-    if(S_DONE != ret)
+    if (S_DONE != ret)
     {
         THROW_BROM_EXCEPTION(ret, 0);
     }
 
     FlashTool_EnableDRAM_Result dram_result;
     ret = FlashTool_EnableDRAM(ft_handle, dram_setting, &dram_result);
-    if(S_DONE != ret)
+    if (S_DONE != ret)
     {
         THROW_BROM_EXCEPTION(ret, 0);
     }
@@ -378,17 +375,17 @@ void MemoryTestCommand::EnableDRAM(DA_REPORT_T &da_report,
 }
 
 void MemoryTestCommand::RAMTest(FlashTool_MemoryTest_Arg *mt_arg,
-             FlashTool_MemoryTest_Result *mt_result,
-             const DA_REPORT_T &da_report,
-             FLASHTOOL_API_HANDLE_T ft_handle)
+    FlashTool_MemoryTest_Result *mt_result,
+    const DA_REPORT_T &da_report,
+    FLASHTOOL_API_HANDLE_T ft_handle)
 {
     int ret = S_DONE;
 
-    if(memtest_setting.ram_data_bus_test())
+    if (memtest_setting.ram_data_bus_test())
     {
         UpdateUI("Data Bus Test: \n", Qt::black);
         ret = RAMDataBusTest(mt_arg,mt_result,da_report, ft_handle);
-        if(ret == S_DONE)
+        if (ret == S_DONE)
         {
             UpdateUI("OK!!\n", Qt::blue);
         }
@@ -398,11 +395,11 @@ void MemoryTestCommand::RAMTest(FlashTool_MemoryTest_Arg *mt_arg,
         }
     }
 
-    if(memtest_setting.ram_addr_bus_test())
+    if (memtest_setting.ram_addr_bus_test())
     {
         UpdateUI("Address Bus Test:\n", Qt::black);
         ret = RAMAddrBusTest(mt_arg, mt_result,da_report,ft_handle);
-        if(ret == S_DONE)
+        if (ret == S_DONE)
         {
             UpdateUI("OK!!\n", Qt::blue);
         }
@@ -412,17 +409,17 @@ void MemoryTestCommand::RAMTest(FlashTool_MemoryTest_Arg *mt_arg,
         }
     }
 
-    if(memtest_setting.ram_dedicated_pattern_test())
+    if (memtest_setting.ram_dedicated_pattern_test())
     {
         // define the pattern set for pattern test
         unsigned int test_pattern[9] = {0x44332211, 0xA5A5A5A5, 0xA5A5A500,
-                               0xA500A500, 0xA5000000, 0x00000000,
-                               0xFFFF0000, 0xFFFFFFFF, 0x5A5A5A5A};
+            0xA500A500, 0xA5000000, 0x00000000,
+            0xFFFF0000, 0xFFFFFFFF, 0x5A5A5A5A};
 
         UpdateUI("RAM Pattern Test :\nWriting ...", Qt::black);
         ret = RAMPatternTest( mt_arg,mt_result,test_pattern,8,
-                              da_report, ft_handle);
-        if(ret == S_DONE)
+            da_report, ft_handle);
+        if (ret == S_DONE)
         {
             UpdateUI("OK!!\n", Qt::blue);
         }
@@ -432,7 +429,7 @@ void MemoryTestCommand::RAMTest(FlashTool_MemoryTest_Arg *mt_arg,
         }
     }
 
-    if(memtest_setting.ram_inc_dec_pattern_test())
+    if (memtest_setting.ram_inc_dec_pattern_test())
     {
         UpdateUI("Increment/Decrement Test:\nWriting...", Qt::black);
         ret = RAMIncDecTest(mt_arg,mt_result, da_report, ft_handle);
@@ -441,9 +438,9 @@ void MemoryTestCommand::RAMTest(FlashTool_MemoryTest_Arg *mt_arg,
 
 
 int MemoryTestCommand::RAMDataBusTest(FlashTool_MemoryTest_Arg *mt_arg,
-                    FlashTool_MemoryTest_Result *mt_result,
-                    const DA_REPORT_T &da_report,
-                    FLASHTOOL_API_HANDLE_T ft_handle)
+    FlashTool_MemoryTest_Result *mt_result,
+    const DA_REPORT_T &da_report,
+    FLASHTOOL_API_HANDLE_T ft_handle)
 {
     // DRAM or SRAM
     if ( HW_RAM_DRAM == da_report.m_ext_ram_type ) {
@@ -459,9 +456,9 @@ int MemoryTestCommand::RAMDataBusTest(FlashTool_MemoryTest_Arg *mt_arg,
 }
 
 int MemoryTestCommand::RAMAddrBusTest(FlashTool_MemoryTest_Arg *mt_arg,
-                    FlashTool_MemoryTest_Result *mt_result,
-                    const DA_REPORT_T &da_report,
-                    FLASHTOOL_API_HANDLE_T ft_handle)
+    FlashTool_MemoryTest_Result *mt_result,
+    const DA_REPORT_T &da_report,
+    FLASHTOOL_API_HANDLE_T ft_handle)
 {
     // DRAM or SRAM
     if ( HW_RAM_DRAM == da_report.m_ext_ram_type ) {
@@ -477,11 +474,11 @@ int MemoryTestCommand::RAMAddrBusTest(FlashTool_MemoryTest_Arg *mt_arg,
 }
 
 int MemoryTestCommand::RAMPatternTest(FlashTool_MemoryTest_Arg *mt_arg,
-                    FlashTool_MemoryTest_Result *mt_result,
-                    unsigned int pattern_set[],
-                    int pattern_size,
-                    const DA_REPORT_T &da_report,
-                    FLASHTOOL_API_HANDLE_T ft_handle)
+    FlashTool_MemoryTest_Result *mt_result,
+    unsigned int pattern_set[],
+    int pattern_size,
+    const DA_REPORT_T &da_report,
+    FLASHTOOL_API_HANDLE_T ft_handle)
 {
     int ret = S_DONE;
     QString msg;
@@ -490,7 +487,7 @@ int MemoryTestCommand::RAMPatternTest(FlashTool_MemoryTest_Arg *mt_arg,
     {
         UpdateUI(msg.sprintf("\t0x%08X, ", pattern_set[i]),  Qt::black);
         ret = RAMOnePatternTest( mt_arg, mt_result, pattern_set[i], da_report, ft_handle);
-        if(ret != S_DONE)
+        if (ret != S_DONE)
         {
             LOG("RAMOnePatternTest failed(%d)", ret);
             break;
@@ -501,10 +498,10 @@ int MemoryTestCommand::RAMPatternTest(FlashTool_MemoryTest_Arg *mt_arg,
 }
 
 int MemoryTestCommand::RAMOnePatternTest(FlashTool_MemoryTest_Arg *mt_arg,
-                       FlashTool_MemoryTest_Result *mt_result,
-                       unsigned int pattern,
-                       const DA_REPORT_T &da_report,
-                       FLASHTOOL_API_HANDLE_T ft_handle)
+    FlashTool_MemoryTest_Result *mt_result,
+    unsigned int pattern,
+    const DA_REPORT_T &da_report,
+    FLASHTOOL_API_HANDLE_T ft_handle)
 {
     // DRAM or SRAM
     if ( HW_RAM_DRAM == da_report.m_ext_ram_type ) {
@@ -527,13 +524,13 @@ int MemoryTestCommand::RAMOnePatternTest(FlashTool_MemoryTest_Arg *mt_arg,
 }
 
 int MemoryTestCommand::RAMIncDecTest(FlashTool_MemoryTest_Arg *mt_arg,
-                   FlashTool_MemoryTest_Result *mt_result,
-                   const DA_REPORT_T &da_report,
-                   FLASHTOOL_API_HANDLE_T ft_handle)
+    FlashTool_MemoryTest_Result *mt_result,
+    const DA_REPORT_T &da_report,
+    FLASHTOOL_API_HANDLE_T ft_handle)
 {
     // Memory 32 bits I/O increasement/decreasement pattern test
     int ret = RAMIncDecTestIO( mt_arg, mt_result, HW_MEM_IO_32BIT, da_report, ft_handle);
-    if(ret == S_DONE)
+    if (ret == S_DONE)
     {
         UpdateUI("OK!!\n", Qt::blue);
     }
@@ -546,10 +543,10 @@ int MemoryTestCommand::RAMIncDecTest(FlashTool_MemoryTest_Arg *mt_arg,
 }
 
 int MemoryTestCommand::RAMIncDecTestIO(FlashTool_MemoryTest_Arg *mt_arg,
-                     FlashTool_MemoryTest_Result *mt_result,
-                     HW_MemoryIO_E io,
-                     const DA_REPORT_T &da_report,
-                     FLASHTOOL_API_HANDLE_T ft_handle)
+    FlashTool_MemoryTest_Result *mt_result,
+    HW_MemoryIO_E io,
+    const DA_REPORT_T &da_report,
+    FLASHTOOL_API_HANDLE_T ft_handle)
 {
     // DRAM or SRAM
     if ( HW_RAM_DRAM == da_report.m_ext_ram_type ) {
@@ -571,9 +568,9 @@ int MemoryTestCommand::RAMIncDecTestIO(FlashTool_MemoryTest_Arg *mt_arg,
 }
 
 int MemoryTestCommand::DRAMFlipTest(FlashTool_MemoryTest_Arg *mt_arg,
-                  FlashTool_MemoryTest_Result *mt_result,
-                  const DA_REPORT_T &da_report,
-                  FLASHTOOL_API_HANDLE_T ft_handle)
+    FlashTool_MemoryTest_Result *mt_result,
+    const DA_REPORT_T &da_report,
+    FLASHTOOL_API_HANDLE_T ft_handle)
 {
     //paras: addr, len, cnt
     mt_arg->m_start_addr    = memtest_setting.start_address();
@@ -582,7 +579,7 @@ int MemoryTestCommand::DRAMFlipTest(FlashTool_MemoryTest_Arg *mt_arg,
     // DRAM or SRAM
     if ( HW_RAM_DRAM == da_report.m_ext_ram_type )
     {
-        if(mt_arg->m_start_addr >= da_report.m_ext_ram_size)
+        if (mt_arg->m_start_addr >= da_report.m_ext_ram_size)
         {
             LOGE("addr[0x%llx] >= ext_ram_size[0x%llx]", mt_arg->m_start_addr, da_report.m_ext_ram_size);
             return STATUS_EXCEED_AVALIABLE_RANGE;
@@ -590,10 +587,10 @@ int MemoryTestCommand::DRAMFlipTest(FlashTool_MemoryTest_Arg *mt_arg,
 
         mt_arg->m_memory_device = HW_MEM_EXT_DRAM;
         mt_arg->m_size          = memtest_setting.test_length() == 0
-                                 ? (da_report.m_ext_ram_size - mt_arg->m_start_addr)
-                                 : memtest_setting.test_length();
+            ? (da_report.m_ext_ram_size - mt_arg->m_start_addr)
+            : memtest_setting.test_length();
 
-        if(mt_arg->m_start_addr + mt_arg->m_size > da_report.m_ext_ram_size)
+        if (mt_arg->m_start_addr + mt_arg->m_size > da_report.m_ext_ram_size)
         {
             LOGE("addr[0x%llx] + len[0x%llx] > ext_ram_size[0x%llx]", mt_arg->m_start_addr, mt_arg->m_size, da_report.m_ext_ram_size);
             return STATUS_EXCEED_AVALIABLE_RANGE;
@@ -601,7 +598,7 @@ int MemoryTestCommand::DRAMFlipTest(FlashTool_MemoryTest_Arg *mt_arg,
     }
     else
     {
-        if(mt_arg->m_start_addr >= da_report.m_int_sram_size)
+        if (mt_arg->m_start_addr >= da_report.m_int_sram_size)
         {
             LOGE("addr[0x%llx] >= int_sram_size[0x%llx]", mt_arg->m_start_addr, da_report.m_int_sram_size);
             return STATUS_EXCEED_AVALIABLE_RANGE;
@@ -609,10 +606,10 @@ int MemoryTestCommand::DRAMFlipTest(FlashTool_MemoryTest_Arg *mt_arg,
 
         mt_arg->m_memory_device = HW_MEM_EXT_SRAM;
         mt_arg->m_size          = memtest_setting.test_length() == 0
-                                 ? (da_report.m_int_sram_size - mt_arg->m_start_addr)
-                                 : memtest_setting.test_length();
+            ? (da_report.m_int_sram_size - mt_arg->m_start_addr)
+            : memtest_setting.test_length();
 
-        if(mt_arg->m_start_addr + mt_arg->m_size > da_report.m_int_sram_size)
+        if (mt_arg->m_start_addr + mt_arg->m_size > da_report.m_int_sram_size)
         {
             LOGE("addr[0x%llx] + len[0x%llx] > int_sram_size[0x%llx]", mt_arg->m_start_addr, mt_arg->m_size, da_report.m_int_sram_size);
             return STATUS_EXCEED_AVALIABLE_RANGE;
@@ -626,19 +623,19 @@ int MemoryTestCommand::DRAMFlipTest(FlashTool_MemoryTest_Arg *mt_arg,
         , mt_arg->m_start_addr, mt_arg->m_size, memtest_setting.test_cnt());
 
     int ret = S_DONE;
-    for(U32 i=0; i<memtest_setting.test_cnt(); i++)
+    for (U32 i=0; i<memtest_setting.test_cnt(); i++)
     {
 
         LOG("dram flip test , current round: %u", i);
         QString msg = QString("Current Round: %1").arg(i);
-        if(memtest_setting.test_cnt()>1)
+        if (memtest_setting.test_cnt()>1)
             UpdateUI(msg, Qt::darkCyan);
 
         ret = CHECK_METEST_RESULT(FlashTool_MemoryTest(ft_handle, mt_arg, mt_result));
 
         LOG("Round %u Pass", i);
         msg = QString("Round %1 Pass").arg(i);
-        if(ret == S_DONE && memtest_setting.test_cnt()>1)
+        if (ret == S_DONE && memtest_setting.test_cnt()>1)
             UpdateUI(msg, Qt::darkGreen);
     }
     LOG("dram flip test DONE");
@@ -646,18 +643,18 @@ int MemoryTestCommand::DRAMFlipTest(FlashTool_MemoryTest_Arg *mt_arg,
 }
 
 void MemoryTestCommand::NANDTest(FlashTool_MemoryTest_Arg *mt_arg,
-              FlashTool_MemoryTest_Result *mt_result,
-              const DA_REPORT_T &da_report,
-              FLASHTOOL_API_HANDLE_T ft_handle)
+    FlashTool_MemoryTest_Result *mt_result,
+    const DA_REPORT_T &da_report,
+    FLASHTOOL_API_HANDLE_T ft_handle)
 {
     int ret = S_DONE;
 
     // NAND Flash Test : Pattern Test
-    if(memtest_setting.nand_flash_test())
+    if (memtest_setting.nand_flash_test())
     {
         UpdateUI("Pattern Test (0x5A):\r\n", Qt::black);
         ret = NANDPatternTest( mt_arg, mt_result, da_report, ft_handle);
-        if(ret == S_DONE)
+        if (ret == S_DONE)
         {
             UpdateUI("OK!!\n", Qt::blue);
         }
@@ -669,9 +666,9 @@ void MemoryTestCommand::NANDTest(FlashTool_MemoryTest_Arg *mt_arg,
 }
 
 int MemoryTestCommand::NANDPatternTest(FlashTool_MemoryTest_Arg *mt_arg,
-                     FlashTool_MemoryTest_Result *mt_result,
-                     const DA_REPORT_T &da_report,
-                     FLASHTOOL_API_HANDLE_T ft_handle)
+    FlashTool_MemoryTest_Result *mt_result,
+    const DA_REPORT_T &da_report,
+    FLASHTOOL_API_HANDLE_T ft_handle)
 {
     // memory device : nand
     mt_arg->m_memory_device = HW_MEM_NAND;
@@ -690,9 +687,9 @@ int MemoryTestCommand::NANDPatternTest(FlashTool_MemoryTest_Arg *mt_arg,
 }
 
 void MemoryTestCommand::EMMCTest(FlashTool_MemoryTest_Arg *mt_arg,
-              FlashTool_MemoryTest_Result *mt_result,
-              const DA_REPORT_T &da_report,
-              FLASHTOOL_API_HANDLE_T ft_handle)
+    FlashTool_MemoryTest_Result *mt_result,
+    const DA_REPORT_T &da_report,
+    FLASHTOOL_API_HANDLE_T ft_handle)
 {
     int ret = S_DONE;
 
@@ -701,7 +698,7 @@ void MemoryTestCommand::EMMCTest(FlashTool_MemoryTest_Arg *mt_arg,
     {
         UpdateUI("EMMC Pattern Test(0x5A5A):\n");
         ret = EMMCPatternTest( mt_arg, mt_result, da_report, ft_handle);
-        if(ret == S_DONE)
+        if (ret == S_DONE)
         {
             UpdateUI("OK!!\n", Qt::blue);
         }
@@ -713,9 +710,9 @@ void MemoryTestCommand::EMMCTest(FlashTool_MemoryTest_Arg *mt_arg,
 }
 
 int MemoryTestCommand::EMMCPatternTest(FlashTool_MemoryTest_Arg *mt_arg,
-                     FlashTool_MemoryTest_Result *mt_result,
-                     const DA_REPORT_T &da_report,
-                     FLASHTOOL_API_HANDLE_T ft_handle)
+    FlashTool_MemoryTest_Result *mt_result,
+    const DA_REPORT_T &da_report,
+    FLASHTOOL_API_HANDLE_T ft_handle)
 {
     // memory device : NOR
     mt_arg->m_memory_device = HW_MEM_EMMC;
@@ -734,29 +731,24 @@ int MemoryTestCommand::EMMCPatternTest(FlashTool_MemoryTest_Arg *mt_arg,
 }
 
 void MemoryTestCommand::UFSTest(FlashTool_MemoryTest_Arg *mt_arg,
-              FlashTool_MemoryTest_Result *mt_result,
-              const DA_REPORT_T &da_report,
-              FLASHTOOL_API_HANDLE_T ft_handle)
+    FlashTool_MemoryTest_Result *mt_result,
+    const DA_REPORT_T &da_report,
+    FLASHTOOL_API_HANDLE_T ft_handle)
 {
     int ret = S_DONE;
 
     //Pattern Test
-    if (memtest_setting.ufs_flash_test() && memtest_setting.ufs_dedicated_pattern_test())
-    {
+    if (memtest_setting.ufs_flash_test() && memtest_setting.ufs_dedicated_pattern_test()) {
         UpdateUI("UFS Pattern Test(0x5A5A):\n");
         ret = UFSPatternTest( mt_arg, mt_result, da_report, ft_handle);
-        if(ret == S_DONE)
-        {
+        if (ret == S_DONE) {
             UpdateUI("OK!!\n", Qt::blue);
-        }
-        else
-        {
+        } else {
             UpdateUI("Failed!!\n", Qt::red);
         }
 
         Flash_DL_Cust_Info info;
-        for(int i=0; i<128; ++i)
-        {
+        for (int i = 0; i < 128; i++) {
             info.custom_dl_info[i] = 'r';
         }
         FlashTool_WriteCustFlashInfo(ft_handle,&info);
@@ -767,9 +759,9 @@ void MemoryTestCommand::UFSTest(FlashTool_MemoryTest_Arg *mt_arg,
 }
 
 int MemoryTestCommand::UFSPatternTest(FlashTool_MemoryTest_Arg *mt_arg,
-                     FlashTool_MemoryTest_Result *mt_result,
-                     const DA_REPORT_T &da_report,
-                     FLASHTOOL_API_HANDLE_T ft_handle)
+    FlashTool_MemoryTest_Result *mt_result,
+    const DA_REPORT_T &da_report,
+    FLASHTOOL_API_HANDLE_T ft_handle)
 {
     // memory device : NOR
     mt_arg->m_memory_device = HW_MEM_UFS;

@@ -48,18 +48,21 @@ CoreHandle::~CoreHandle()
     }
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcatch-value"
 void CoreHandle::LoadDA(const std::string & da_file)
 {
-    try{
+    try {
         if (!da_file.empty())
         {
             da_handle()->LoadDA(da_file);
         }
-    }catch(BromException e)
+    } catch (BromException e)
     {
         THROW_BROM_EXCEPTION_EX(e);
     }
 }
+#pragma GCC diagnostic pop
 
 DLHandle *CoreHandle::dl_handle()
 {
@@ -141,9 +144,9 @@ void CoreHandle::LoadSecurityFile(const std::string &sect_file)
 
 void CoreHandle::LoadAuthFile(const std::string &auth_file)
 {
-    try{
+    try {
         auth_handle_->LoadAuthFile(auth_file);
-    }catch(const BromException& e)
+    } catch (const BromException& e)
     {
         THROW_BROM_EXCEPTION_EX(e);
     }
