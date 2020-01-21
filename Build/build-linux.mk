@@ -1,5 +1,5 @@
 # tools
-QMAKE                         := /opt/QtSDK/Desktop/Qt/473/gcc/bin/qmake
+QMAKE                         := qmake
 MAKE                          := make
 RM                            := rm
 MKDIR                         := mkdir
